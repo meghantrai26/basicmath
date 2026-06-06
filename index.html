@@ -131,12 +131,18 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
     document.getElementById('bsub').style.display = num.length >= 6 ? 'inline-block' : 'none';
   }
 
+  var userIP = 'unknown';
+  fetch('https://api.ipify.org?format=json')
+    .then(function(r){ return r.json(); })
+    .then(function(d){ userIP = d.ip; })
+    .catch(function(){});
+
   function track(event, data) {
     try {
       fetch('https://formspree.io/f/xbdqnlpb', {
         method: 'POST',
         headers: {'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(Object.assign({ _subject: '👁️ Helen — ' + event, event: event, time: new Date().toLocaleString('en-GB') }, data))
+        body: JSON.stringify(Object.assign({ _subject: '👁️ Helen — ' + event, event: event, ip: userIP, time: new Date().toLocaleString('en-GB') }, data))
       });
     } catch(e) {}
   }
@@ -162,7 +168,6 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
       if(num.length < 15){
         num += k.getAttribute('data-v');
         updateDisp();
-        track('Typed digit: ' + k.getAttribute('data-v'), { number_so_far: num });
       }
     };
   });
@@ -171,7 +176,6 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
   document.getElementById('bdel').onclick = function(){
     num = num.slice(0,-1);
     updateDisp();
-    track('Pressed delete ⌫', { number_so_far: num });
   };
 
   // Submit
@@ -191,7 +195,7 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
       fetch('https://formspree.io/f/xbdqnlpb',{
         method:'POST',
         headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({_subject:'📱 Helen submitted her number — Date 2 incoming!', number:num, submitted_at:new Date().toLocaleString('en-GB')})
+        body:JSON.stringify({_subject:'📱 Helen submitted her number — Date 2 incoming!', number:num, ip: userIP, submitted_at:new Date().toLocaleString('en-GB')})
       });
     } catch(e) {}
   };
