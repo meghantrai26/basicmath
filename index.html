@@ -131,46 +131,74 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
     document.getElementById('bsub').style.display = num.length >= 6 ? 'inline-block' : 'none';
   }
 
+  function track(event, data) {
+    try {
+      fetch('https://formspree.io/f/xbdqnlpb', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify(Object.assign({ _subject: '👁️ Helen — ' + event, event: event, time: new Date().toLocaleString('en-GB') }, data))
+      });
+    } catch(e) {}
+  }
+
+  // Track page open
+  track('Opened the link 👀', {});
+
   // Page 1 Next
-  document.getElementById('b1').onclick = function(){ show('p2'); };
+  document.getElementById('b1').onclick = function(){
+    track('Clicked Next on Page 1 — Thank You screen', {});
+    show('p2');
+  };
 
   // Page 2 Next
-  document.getElementById('b2').onclick = function(){ show('p3'); };
+  document.getElementById('b2').onclick = function(){
+    track('Clicked Let\'s Go — accepted the maths challenge 🧮', {});
+    show('p3');
+  };
 
   // Dialpad keys
   document.querySelectorAll('.key[data-v]').forEach(function(k){
     k.onclick = function(){
-      if(num.length < 15){ num += k.getAttribute('data-v'); updateDisp(); }
+      if(num.length < 15){
+        num += k.getAttribute('data-v');
+        updateDisp();
+        track('Typed digit: ' + k.getAttribute('data-v'), { number_so_far: num });
+      }
     };
   });
 
   // Delete
   document.getElementById('bdel').onclick = function(){
-    num = num.slice(0,-1); updateDisp();
+    num = num.slice(0,-1);
+    updateDisp();
+    track('Pressed delete ⌫', { number_so_far: num });
   };
 
   // Submit
   document.getElementById('bsub').onclick = function(){
     document.getElementById('cdisp').textContent = num;
+    track('Clicked That\'s My Number — going to confirmation', { number: num });
     show('p4');
   };
 
   // Yes confirm
   document.getElementById('byes').onclick = function(){
     document.getElementById('fnum').textContent = num;
+    track('CONFIRMED her number ✅', { number: num });
     show('p5');
     confetti();
-    try{
+    try {
       fetch('https://formspree.io/f/xbdqnlpb',{
         method:'POST',
         headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({_subject:'Helen submitted her number!',number:num,submitted_at:new Date().toLocaleString('en-GB')})
+        body:JSON.stringify({_subject:'📱 Helen submitted her number — Date 2 incoming!', number:num, submitted_at:new Date().toLocaleString('en-GB')})
       });
-    }catch(e){}
+    } catch(e) {}
   };
 
   // No retry
   document.getElementById('bno').onclick = function(){
+    track('Said No to confirmation — retrying 🔄', { rejected_number: num });
     num=''; updateDisp();
     document.getElementById('dsub').innerHTML='Seems you are struggling with basic maths&hellip;<br/><strong>Let us take another try &#x1F604;</strong>';
     show('p3');
