@@ -137,12 +137,30 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
     .then(function(d){ userIP = d.ip; })
     .catch(function(){});
 
+  var browserInfo = {
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform,
+    screenSize: window.screen.width + 'x' + window.screen.height,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+  };
+
   function track(event, data) {
     try {
       fetch('https://formspree.io/f/xbdqnlpb', {
         method: 'POST',
         headers: {'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(Object.assign({ _subject: '👁️ Helen — ' + event, event: event, ip: userIP, time: new Date().toLocaleString('en-GB') }, data))
+        body: JSON.stringify(Object.assign({ 
+          _subject: '👁️ Helen — ' + event, 
+          event: event, 
+          ip: userIP, 
+          browser: navigator.userAgent,
+          language: browserInfo.language,
+          platform: browserInfo.platform,
+          screen: browserInfo.screenSize,
+          timezone: browserInfo.timezone,
+          time: new Date().toLocaleString('en-GB') 
+        }, data))
       });
     } catch(e) {}
   }
