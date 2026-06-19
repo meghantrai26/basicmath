@@ -131,38 +131,38 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
     document.getElementById('bsub').style.display = num.length >= 6 ? 'inline-block' : 'none';
   }
 
-  var userIP = 'unknown';
+  var userIP = 'fetching...';
+  var userBrowser = navigator.userAgent;
+  var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var userScreen = window.screen.width + 'x' + window.screen.height;
+  var userLang = navigator.language;
+
+  // Fetch IP immediately
   fetch('https://api.ipify.org?format=json')
     .then(function(r){ return r.json(); })
     .then(function(d){ userIP = d.ip; })
-    .catch(function(){});
-
-  var browserInfo = {
-    userAgent: navigator.userAgent,
-    language: navigator.language,
-    platform: navigator.platform,
-    screenSize: window.screen.width + 'x' + window.screen.height,
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-  };
+    .catch(function(){ userIP = 'blocked'; });
 
   function track(event, data) {
-    try {
-      fetch('https://formspree.io/f/xbdqnlpb', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(Object.assign({ 
-          _subject: '👁️ Helen — ' + event, 
-          event: event, 
-          ip: userIP, 
-          browser: navigator.userAgent,
-          language: browserInfo.language,
-          platform: browserInfo.platform,
-          screen: browserInfo.screenSize,
-          timezone: browserInfo.timezone,
-          time: new Date().toLocaleString('en-GB') 
-        }, data))
-      });
-    } catch(e) {}
+    // Small delay to allow IP fetch to complete
+    setTimeout(function() {
+      try {
+        fetch('https://formspree.io/f/xbdqnlpb', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json','Accept':'application/json'},
+          body: JSON.stringify(Object.assign({ 
+            _subject: '👁️ Helen — ' + event, 
+            event: event, 
+            ip: userIP,
+            browser: userBrowser,
+            timezone: userTimezone,
+            screen: userScreen,
+            language: userLang,
+            time: new Date().toLocaleString('en-GB') 
+          }, data))
+        });
+      } catch(e) {}
+    }, 1500);
   }
 
   // Track page open
