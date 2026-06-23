@@ -25,8 +25,8 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
 .rbtn{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff;border:none;border-radius:10px;padding:13px 36px;font-family:'Cinzel Decorative',serif;font-size:clamp(.7rem,1.8vw,.85rem);font-weight:700;cursor:pointer;letter-spacing:.08em;box-shadow:0 4px 18px rgba(220,38,38,.4);transition:all .25s;}
 .rbtn:hover{transform:scale(1.05);}
 .display{background:rgba(0,0,0,.5);border:1.5px solid rgba(245,197,24,.35);border-radius:10px;padding:12px;font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,4vw,1.6rem);color:var(--gold);letter-spacing:.15em;min-height:52px;margin-bottom:18px;word-break:break-all;}
-.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:230px;margin:0 auto 16px;}
-.key{aspect-ratio:1;border-radius:50%;background:rgba(245,197,24,.08);border:1.5px solid rgba(245,197,24,.25);color:#fff;font-family:'Cinzel',serif;font-size:1.1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:250px;margin:0 auto 20px;justify-items:center;}
+.key{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#f0f0f0;font-family:'SF Pro Display','Inter',system-ui,sans-serif;font-size:1.35rem;font-weight:500;cursor:pointer;transition:background .1s,transform .1s;display:flex;align-items:center;justify-content:center;outline:none;-webkit-tap-highlight-color:transparent;}.key:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);}.key:active{transform:scale(0.92);background:rgba(255,255,255,.13);}
 .key:hover{background:rgba(245,197,24,.22);border-color:rgba(245,197,24,.7);color:var(--gold);transform:scale(1.1);}
 .key:active{transform:scale(.93);}
 .key.del{font-size:.8rem;color:rgba(255,100,100,.8);border-color:rgba(255,100,100,.25);}
@@ -75,7 +75,21 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
     <div class="title">Basic Maths Time &#x1F9E0;</div>
     <div class="divider"></div>
     <div class="sub" id="dsub">Arrange these digits in such a way that<br/><strong>I can contact you anytime &#x1F609;</strong></div>
-    <div class="display" id="disp">_ _ _</div>
+
+    <!-- DISPLAY -->
+    <div id="dialDisplay" style="position:relative;text-align:center;margin-bottom:20px;">
+      <div id="disp" style="font-size:clamp(1.8rem,8vw,2.4rem);font-weight:300;color:#ffffff;letter-spacing:.18em;min-height:56px;display:flex;align-items:center;justify-content:center;font-family:'SF Pro Display','Inter',system-ui,sans-serif;">· · ·</div>
+      <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);margin-top:12px;"></div>
+      <!-- Backspace -->
+      <button id="bdel" style="position:absolute;right:0;top:50%;transform:translateY(-60%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.35);padding:8px;outline:none;display:none;transition:color .2s;" onmouseover="this.style.color='rgba(255,255,255,.75)'" onmouseout="this.style.color='rgba(255,255,255,.35)'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+          <line x1="18" y1="9" x2="13" y2="14"/><line x1="13" y1="9" x2="18" y2="14"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- KEYPAD -->
     <div class="pad">
       <button class="key" data-v="1">1</button>
       <button class="key" data-v="2">2</button>
@@ -88,9 +102,14 @@ body{min-height:100vh;font-family:'Cinzel',serif;color:#fff;display:flex;align-i
       <button class="key" data-v="9">9</button>
       <button class="key" data-v="+">+</button>
       <button class="key" data-v="0">0</button>
-      <button class="key del" id="bdel">&#x232B;</button>
+      <button class="key" data-v="#">#</button>
     </div>
+
     <button class="gbtn" id="bsub" style="display:none;">That&apos;s My Number &#x2705;</button>
+    <div style="margin-top:14px;font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(.62rem,1.8vw,.72rem);color:rgba(239,68,68,.6);text-align:center;line-height:1.7;letter-spacing:.03em;">
+      * Design built in a hurry — I know, I know. 😄<br/>
+      Will be improved if I get selected for the 2nd date round. 💛
+    </div>
   </div>
 
   <!-- PAGE 4 -->
